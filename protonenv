@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+work="${XDG_RUNTIME_DIR:-/run/user/$UID}"
+
+case "${1}" in
+	"init")
+		[[ ! -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}" ]] && mkdir -p "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
+		printenv > "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+
+		shift ; "${@}"
+
+		[[ -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env" ]] && rm -rf "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
+	;;
+	"run")
+		[[ ! -e "${work}/${0##*/}/${2}/env" ]] && {
+			echo "Arquivo "env" não encontrado."
+			exit 1
+		}
+		[[ $# -lt 2 ]] && {
+			echo "Falta argumentos, consulte o help."
+			exit 1
+		}
+		set -a
+		source "${work}/${0##*/}/${2}/env"
+		set +a ; shift 2
+		PROTON_STEAM="${STEAM_COMPAT_TOOL_PATHS%%:*}"
+		"${PROTON_STEAM}/proton" run "${@}"
+	;;
+	"list")
+		ls "${work}/${0##*/}/"
+	;;
+	"help"|"--help")
+		echo " ${0##*/}:
+		init			Deve ser usado nas opções de inicialização do jogo. Cria o ambiente de execuçaõ.
+					Ex: "${0##*/}" init %command%
+		run <APPID> <EXE>	Usado para executar programas dentro do ambiente criado pelo "init".
+					Ex: "${0##*/}" run 730 prog.exe
+		list			Lista os programas em execução iniciados com o "init".
+		help			Mostra esta ajuda.
+		"
+	;;
+esac
