@@ -5,7 +5,13 @@ work="${XDG_RUNTIME_DIR:-/run/user/$UID}"
 case "${1}" in
 	"init")
 		[[ ! -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}" ]] && mkdir -p "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
-		printenv > "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+
+		echo "export SteamAppId="${SteamAppId}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export SteamGameId="${SteamGameId}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_COMPAT_CLIENT_INSTALL_PATH="${STEAM_COMPAT_CLIENT_INSTALL_PATH}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_COMPAT_DATA_PATH="${STEAM_COMPAT_DATA_PATH}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_COMPAT_TOOL_PATHS="${STEAM_COMPAT_TOOL_PATHS}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_BASE_FOLDER="${STEAM_BASE_FOLDER}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
 
 		shift ; "${@}"
 
@@ -20,11 +26,10 @@ case "${1}" in
 			echo "Falta argumentos, consulte o help."
 			exit 1
 		}
-		set -a
 		source "${work}/${0##*/}/${2}/env"
-		set +a ; shift 2
+		shift 2
 		PROTON_STEAM="${STEAM_COMPAT_TOOL_PATHS%%:*}"
-		"${PROTON_STEAM}/proton" run "${@}"
+		"${PROTON_STEAM}/proton" run "${@}" 2>/dev/null
 	;;
 	"list")
 		ls "${work}/${0##*/}/" 2>/dev/null || echo "Não encontrado, esta em execução?"
