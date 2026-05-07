@@ -6,12 +6,12 @@ case "${1}" in
 	"init")
 		[[ ! -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}" ]] && mkdir -p "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
 
-		echo "export SteamAppId="${SteamAppId}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export SteamGameId="${SteamGameId}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_COMPAT_CLIENT_INSTALL_PATH="${STEAM_COMPAT_CLIENT_INSTALL_PATH}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_COMPAT_DATA_PATH="${STEAM_COMPAT_DATA_PATH}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_COMPAT_TOOL_PATHS="${STEAM_COMPAT_TOOL_PATHS}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_BASE_FOLDER="${STEAM_BASE_FOLDER}"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export SteamAppId=\"${SteamAppId}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export SteamGameId=\"${SteamGameId}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_COMPAT_CLIENT_INSTALL_PATH=\"${STEAM_COMPAT_CLIENT_INSTALL_PATH}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_COMPAT_DATA_PATH=\"${STEAM_COMPAT_DATA_PATH}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_COMPAT_TOOL_PATHS=\"${STEAM_COMPAT_TOOL_PATHS}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export STEAM_BASE_FOLDER=\"${STEAM_BASE_FOLDER}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
 
 		shift ; "${@}"
 
