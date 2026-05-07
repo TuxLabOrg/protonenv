@@ -16,7 +16,7 @@ case "${1}" in
 			echo "Arquivo "env" não encontrado."
 			exit 1
 		}
-		[[ $# -lt 2 ]] && {
+		[[ $# -lt 3 ]] && {
 			echo "Falta argumentos, consulte o help."
 			exit 1
 		}
@@ -27,9 +27,9 @@ case "${1}" in
 		"${PROTON_STEAM}/proton" run "${@}"
 	;;
 	"list")
-		ls "${work}/${0##*/}/"
+		ls "${work}/${0##*/}/" 2>/dev/null || echo "Não encontrado, esta em execução?"
 	;;
-	"help"|"--help")
+	"help"|"--help"|*)
 		echo " ${0##*/}:
 		init			Deve ser usado nas opções de inicialização do jogo. Cria o ambiente de execuçaõ.
 					Ex: "${0##*/}" init %command%
