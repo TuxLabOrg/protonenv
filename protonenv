@@ -4,6 +4,7 @@ work="${XDG_RUNTIME_DIR:-/run/user/$UID}"
 
 case "${1}" in
 	"init")
+		[[ -z ${STEAM_BASE_FOLDER} ]] && exit 0
 		[[ ! -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}" ]] && mkdir -p "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
 
 		echo "export SteamAppId=\"${SteamAppId}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
