@@ -2,6 +2,7 @@
 Executa programas dentro do ambiente do proton, inspirado no [protonhax](https://github.com/jcnils/protonhax)
 
 Apenas uma reformulação no codigo.
+
 ### Uso:
 ```
 protonenv <parametro>
@@ -14,4 +15,14 @@ protonenv <parametro>
   list			Lista os programas em execução iniciados com o "init".
 
   help			Mostra esta ajuda.
+```
+
+## Ex:
+```
+No jogo na Steam:
+protonenv init %command%
+
+No terminal:
+$ protonenv run <AppID> cmd
+
 ```
