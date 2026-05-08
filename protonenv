@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
 
 work="${XDG_RUNTIME_DIR:-/run/user/$UID}"
+base_folder="${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
 
 case "${1}" in
 	"init")
 		[[ -z ${STEAM_BASE_FOLDER} ]] && exit 0
-		[[ ! -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}" ]] && mkdir -p "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
+		[[ ! -e "${base_folder}" ]] && mkdir -p "${base_folder}"
 
-		echo "export SteamAppId=\"${SteamAppId}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export SteamGameId=\"${SteamGameId}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_COMPAT_CLIENT_INSTALL_PATH=\"${STEAM_COMPAT_CLIENT_INSTALL_PATH}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_COMPAT_DATA_PATH=\"${STEAM_COMPAT_DATA_PATH}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_COMPAT_TOOL_PATHS=\"${STEAM_COMPAT_TOOL_PATHS}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
-		echo "export STEAM_BASE_FOLDER=\"${STEAM_BASE_FOLDER}\"" >> "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env"
+		echo "export SteamAppId=\"${SteamAppId}\"" >> "${base_folder}/env"
+		echo "export SteamGameId=\"${SteamGameId}\"" >> "${base_folder}/env"
+		echo "export STEAM_COMPAT_CLIENT_INSTALL_PATH=\"${STEAM_COMPAT_CLIENT_INSTALL_PATH}\"" >> "${base_folder}/env"
+		echo "export STEAM_COMPAT_DATA_PATH=\"${STEAM_COMPAT_DATA_PATH}\"" >> "${base_folder}/env"
+		echo "export STEAM_COMPAT_TOOL_PATHS=\"${STEAM_COMPAT_TOOL_PATHS}\"" >> "${base_folder}/env"
+		echo "export STEAM_BASE_FOLDER=\"${STEAM_BASE_FOLDER}\"" >> "${base_folder}/env"
 
 		shift ; "${@}"
 
-		[[ -e "${work}/${0##*/}/${SteamAppId:-$SteamGameId}/env" ]] && rm -rf "${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
+		[[ -e "${base_folder}/env" ]] && rm -rf "${base_folder}"
 	;;
 	"run")
 		[[ ! -e "${work}/${0##*/}/${2}/env" ]] && {
