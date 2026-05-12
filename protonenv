@@ -6,10 +6,14 @@ work="${XDG_RUNTIME_DIR:-/run/user/$UID}"
 # Diretório base do script
 base_folder="${work}/${0##*/}/${SteamAppId:-$SteamGameId}"
 
+# Retorna o nome do jogo
 g_name(){
 	libraryfolders="${HOME}/.steam/steam/steamapps/libraryfolders.vdf"
-	for librarys in $(grep path "${libraryfolders}" 2>/dev/null | awk -F' ' '{print $2}');do
-		game_name=$(grep -h "name" "${librarys//\"/}/steamapps/appmanifest_${1}.acf" 2>/dev/null | cut -d'"' -f4)
+	librarys_dirs="$(grep path "${libraryfolders}" 2>/dev/null | cut -d'"' -f4)"
+	#Passa por todas as bibliotecas
+	for librarys in ${librarys_dirs// /\\};do
+		game_name=$(grep -h "name" "${librarys//\\/ }/steamapps/appmanifest_${1}.acf" 2>/dev/null | cut -d'"' -f4)
+		[[ -n "${game_name}" ]] && break
 	done
 }
 
@@ -51,6 +55,7 @@ case "${1}" in
 		"${PROTON_STEAM}/proton" run "${@}" 2>/dev/null
 	;;
 	"list")
+		# Lista todos e com AppId e nome
 		for g_id in $(ls "${work}/${0##*/}/" 2>/dev/null);do
 			g_name "${g_id}"
 			echo "${g_id}			Jogo: ${game_name}"
